@@ -1,4 +1,4 @@
-package com.ravimhzn.starwars.presentation
+package com.ravimhzn.starwars.presentation.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -34,7 +34,7 @@ class FilmListViewModel @Inject constructor(
         dataManager.getMoviesFromDataManager(performBackgroundOperation())
     }
 
-    fun performBackgroundOperation(): LiveData<CustomResource<Film>> {
+    private fun performBackgroundOperation(): LiveData<CustomResource<Film>> {
         return LiveDataReactiveStreams.fromPublisher(
             filmAPI.getFilms()
                 .onErrorReturn {

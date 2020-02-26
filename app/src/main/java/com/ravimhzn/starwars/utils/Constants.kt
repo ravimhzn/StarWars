@@ -6,5 +6,6 @@ class Constants {
 
         const val HTTP_SUCCESS = "Success"
         const val HTTP_FAILURE = "Error while retrieving data"
+        const val POS = "POSITION"
     }
 }

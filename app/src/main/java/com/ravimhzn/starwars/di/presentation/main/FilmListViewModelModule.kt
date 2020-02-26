@@ -1,8 +1,8 @@
-package com.ravimhzn.starwars.di.presentation
+package com.ravimhzn.starwars.di.presentation.main
 
 import androidx.lifecycle.ViewModel
 import com.ravimhzn.starwars.di.ViewModelKey
-import com.ravimhzn.starwars.presentation.FilmListViewModel
+import com.ravimhzn.starwars.presentation.main.FilmListViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -13,5 +13,5 @@ abstract class FilmListViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(FilmListViewModel::class)
-    abstract fun bindAuthViewModel(filmListViewModel: FilmListViewModel): ViewModel
+    abstract fun bindFilmListViewModel(filmListViewModel: FilmListViewModel): ViewModel
 }

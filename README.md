@@ -1,4 +1,4 @@
-<p align="center"><img src="images/starwar.png"></p>
+<p align="center"><img src="images/star.gif"></p>
 <h1 align="center">Star Wars</h1>
 
 ## App Goal:

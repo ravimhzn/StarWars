@@ -72,9 +72,9 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-params:$junit_jupiter_version"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version"
 
-    //Mockito for kotlin
-    def mockito_version = "2.2.0"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_version"
+    //MOCKK
+    def mockk_version = "1.9.3"
+    testImplementation "io.mockk:mockk:$mockk_version"
 
     //RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.0.0'

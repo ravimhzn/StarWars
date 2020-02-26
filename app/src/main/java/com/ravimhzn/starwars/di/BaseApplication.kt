@@ -7,6 +7,9 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
 
+/**
+ * Define in AndroidManifest
+ */
 class BaseApplication : Application(), HasActivityInjector {
 
     @Inject

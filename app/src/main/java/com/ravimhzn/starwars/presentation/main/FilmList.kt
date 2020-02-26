@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -87,6 +88,7 @@ class FilmList : DaggerAppCompatActivity(), RecyclerViewListener {
                     }
                     is CustomResource.Error -> {
                         showProgressBar(false)
+                        Toast.makeText(this, t.message, Toast.LENGTH_SHORT).show()
                     }
                     is CustomResource.Success -> {
                         showProgressBar(false)

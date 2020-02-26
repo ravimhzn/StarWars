@@ -40,12 +40,14 @@ class FilmRecyclerAdapter :
     class FilmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Holds the TextView that will add each animal to
         val tvMovie = itemView.tvMovie
+        val tvReleaseDate = itemView.tvReleaseDate
 
         fun bind(
             film: Film,
             recyclerViewListener: RecyclerViewListener
         ) {
             tvMovie.text = film.title
+            tvReleaseDate.text = "Released Date: ${film.release_date}"
             itemView.setOnClickListener(View.OnClickListener {
                 recyclerViewListener.OnRecyclerViewClicked(adapterPosition)
             })

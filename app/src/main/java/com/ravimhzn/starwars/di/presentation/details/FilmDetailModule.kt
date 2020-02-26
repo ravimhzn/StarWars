@@ -1,7 +1,7 @@
 package com.ravimhzn.starwars.di.presentation.details
 
-import com.ravimhzn.starwars.network.FilmAPI
-import com.ravimhzn.starwars.presentation.main.FilmRecyclerAdapter
+import com.ravimhzn.starwars.network.CharactersAPI
+import com.ravimhzn.starwars.presentation.details.FilmDetailRecyclerAdapter
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -9,13 +9,13 @@ import retrofit2.Retrofit
 @Module
 class FilmDetailModule {
 
-//    @Provides
-//    fun provideAuthLoginApi(retrofit: Retrofit): FilmAPI {
-//        return retrofit.create(FilmAPI::class.java)
-//    }
-//
-//    @Provides
-//    fun provideFilmAdapter(): FilmRecyclerAdapter {
-//        return FilmRecyclerAdapter()
-//    }
+    @Provides
+    fun provieCharactersApi(retrofit: Retrofit): CharactersAPI {
+        return retrofit.create(CharactersAPI::class.java)
+    }
+
+    @Provides
+    fun provideFilmDetailRecyclerAdapter(): FilmDetailRecyclerAdapter {
+        return FilmDetailRecyclerAdapter()
+    }
 }

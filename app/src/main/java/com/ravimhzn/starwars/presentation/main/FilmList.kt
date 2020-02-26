@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,9 +15,12 @@ import com.ravimhzn.starwars.models.Film
 import com.ravimhzn.starwars.presentation.details.FilmDetail
 import com.ravimhzn.starwars.utils.Constants.Companion.POS
 import com.ravimhzn.starwars.utils.CustomResource
+import com.ravimhzn.starwars.utils.DividerItemDecoration
 import com.ravimhzn.starwars.utils.RecyclerViewListener
 import dagger.android.support.DaggerAppCompatActivity
+import java.util.*
 import javax.inject.Inject
+
 
 class FilmList : DaggerAppCompatActivity(), RecyclerViewListener {
 
@@ -51,6 +55,15 @@ class FilmList : DaggerAppCompatActivity(), RecyclerViewListener {
     }
 
     private fun setUpRecyclerView() {
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.divider
+                )
+            )
+        )
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = recyclerAdapter
     }
@@ -58,7 +71,6 @@ class FilmList : DaggerAppCompatActivity(), RecyclerViewListener {
 
     private fun initViews() {
         progressBar = findViewById(R.id.progressBar)
-        recyclerView = findViewById(R.id.recyclerView)
     }
 
     private fun initiateViewModel() {
@@ -81,13 +93,26 @@ class FilmList : DaggerAppCompatActivity(), RecyclerViewListener {
                         Log.d(TAG, t.data?.results?.get(0)?.director)
                         t.data?.let {
                             it.results?.let { it1 ->
-                                filmList = it1
-                                recyclerAdapter.setFilm(filmList, this)
+                                setFilmInRecyclerAdapter(it1)
                             }
                         }
                     }
                 }
             })
+    }
+
+    /**
+     * Sort array as per latest Date and display accordingly
+     */
+    private fun setFilmInRecyclerAdapter(list: List<Film>) {
+        Collections.sort(
+            list
+        ) { p1, p0 -> p0.release_date.compareTo(p1.release_date) }
+        recyclerAdapter.setFilm(list, this)
+
+        for (f in list) {
+            Log.d("TAG", f.release_date)
+        }
     }
 
 

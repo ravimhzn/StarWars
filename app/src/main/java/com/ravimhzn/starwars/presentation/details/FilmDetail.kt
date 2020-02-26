@@ -2,13 +2,20 @@ package com.ravimhzn.starwars.presentation.details
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ravimhzn.starwars.R
+import com.ravimhzn.starwars.models.Characters
 import com.ravimhzn.starwars.models.Film
 import com.ravimhzn.starwars.utils.Constants.Companion.POS
 import com.ravimhzn.starwars.utils.CustomResource
+import com.ravimhzn.starwars.utils.DividerItemDecoration
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -21,11 +28,16 @@ class FilmDetail : DaggerAppCompatActivity() {
 
     lateinit var viewModel: FilmDetailViewModel
 
+    @Inject
+    lateinit var filmDetailRecyclerAdapter: FilmDetailRecyclerAdapter
+
     var positon: Int = 0
 
     lateinit var tvReleaseDate: TextView
     lateinit var tvDirector: TextView
     lateinit var tvProducer: TextView
+    lateinit var progressBar: ProgressBar
+    lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +46,31 @@ class FilmDetail : DaggerAppCompatActivity() {
             positon = it!!
         }
         initViews()
+        initRecyclerView()
         initViewModel()
         subscribeObservers()
+        subscribeObserversForCharacters(positon)
     }
 
     private fun initViews() {
         tvReleaseDate = findViewById(R.id.tvReleaseDate)
         tvDirector = findViewById(R.id.tvDirector)
         tvProducer = findViewById(R.id.tvProducer)
+        progressBar = findViewById(R.id.progressBar)
+    }
+
+    private fun initRecyclerView() {
+        recyclerView = findViewById(R.id.recyclerPeople)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.divider
+                )
+            )
+        )
+        recyclerView.adapter = filmDetailRecyclerAdapter
     }
 
     private fun initViewModel() {
@@ -72,5 +101,37 @@ class FilmDetail : DaggerAppCompatActivity() {
         tvReleaseDate.text = list[positon].release_date
         tvDirector.text = list[positon].director
         tvProducer.text = list[positon].producer
+    }
+
+    private fun subscribeObserversForCharacters(positon: Int) {
+        viewModel.getCharactersFromServer(positon).observe(this,
+            Observer<CustomResource<Characters>> { t ->
+                when (t) {
+                    is CustomResource.Loading -> {
+                        showProgressBar(true)
+                    }
+                    is CustomResource.Error -> {
+                        showProgressBar(false)
+                        Log.d(TAG, t.message)
+                    }
+                    is CustomResource.Success -> {
+                        showProgressBar(false)
+                        Log.d(TAG, t.data?.results?.get(0)?.name)
+                        t.data?.let {
+                            it.results?.let { it1 ->
+                                filmDetailRecyclerAdapter.setCharacters(it1)
+                            }
+                        }
+                    }
+                }
+            })
+    }
+
+    private fun showProgressBar(isVisible: Boolean) {
+        progressBar.visibility = if (isVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 }

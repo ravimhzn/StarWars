@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 class MainModule {
 
     @Provides
-    fun provideAuthLoginApi(retrofit: Retrofit): FilmAPI {
+    fun provideFilmApi(retrofit: Retrofit): FilmAPI {
         return retrofit.create(FilmAPI::class.java)
     }
 

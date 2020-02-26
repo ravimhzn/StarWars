@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModel
 import com.ravimhzn.starwars.models.Film
 import com.ravimhzn.starwars.network.FilmAPI
+import com.ravimhzn.starwars.utils.Constants.Companion.HTTP_FAILURE
 import com.ravimhzn.starwars.utils.CustomResource
 import com.ravimhzn.starwars.utils.DataManager
 import io.reactivex.functions.Function
@@ -47,7 +48,7 @@ class FilmListViewModel @Inject constructor(
                 .map(object : Function<Film, CustomResource<Film>> {
                     override fun apply(film: Film): CustomResource<Film> {
                         if (film.count == -1) {
-                            return CustomResource.Error("Could not authenticated", null)
+                            return CustomResource.Error(HTTP_FAILURE, null)
                         }
                         return CustomResource.Success(film)
                     }

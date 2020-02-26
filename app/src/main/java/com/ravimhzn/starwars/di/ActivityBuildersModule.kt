@@ -1,7 +1,9 @@
 package com.ravimhzn.starwars.di
 
 
-import com.ravimhzn.starwars.presentation.MainActivity
+import com.ravimhzn.starwars.di.presentation.FilmListViewModelModule
+import com.ravimhzn.starwars.di.presentation.MainModule
+import com.ravimhzn.starwars.presentation.FilmList
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -10,8 +12,9 @@ abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector(
         modules = [
-
+            MainModule::class,
+            FilmListViewModelModule::class
         ]
     )
-    abstract fun contributeMainActivity(): MainActivity
+    abstract fun contributeFilmList(): FilmList
 }

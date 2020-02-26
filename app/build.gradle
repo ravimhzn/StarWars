@@ -50,12 +50,12 @@ dependencies {
 
    //Reactive Streams
     def reactivestreams_version = "1.1.1"
-    implementation "android.arch.lifecycle:reactivestreams:$reactivestreams_version"
+    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
 
     // -- Retrofit2
     def retrofit2_version = "2.6.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
-    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
 
     // Rx-Retrofit Call Adapter
     def rxcalladapter_version = '2.5.0'
@@ -74,4 +74,7 @@ dependencies {
     //Mockito for kotlin
     def mockito_version = "2.2.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_version"
+
+    //RecyclerView
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }

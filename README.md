@@ -20,3 +20,7 @@ This demo is expected to run in between minSdkVersion 17 to targetSdkVersion 29.
 * Retrofit2
 * JUnit5
 * Mockk
+
+ ## TODO:
+ - Improve UI for good user interface, Keep the interface simple.
+ - Cover edge case in Unit test

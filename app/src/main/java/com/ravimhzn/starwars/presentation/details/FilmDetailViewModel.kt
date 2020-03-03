@@ -8,7 +8,7 @@ import com.ravimhzn.starwars.models.Characters
 import com.ravimhzn.starwars.models.Film
 import com.ravimhzn.starwars.network.CharactersAPI
 import com.ravimhzn.starwars.utils.Constants.Companion.HTTP_FAILURE
-import com.ravimhzn.starwars.utils.CustomResource
+import com.ravimhzn.starwars.utils.Resources
 import com.ravimhzn.starwars.utils.DataManager
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
@@ -23,11 +23,11 @@ class FilmDetailViewModel @Inject constructor(
 
 
     //We can use injected DataManager and retrieve film data from this function
-    fun getFilmData(): LiveData<CustomResource<Film>> {
+    fun getFilmData(): LiveData<Resources<Film>> {
         return dataManager.getCachedData()
     }
 
-    fun getCharactersFromServer(episode_id: Int): LiveData<CustomResource<Characters>> {
+    fun getCharactersFromServer(episode_id: Int): LiveData<Resources<Characters>> {
         return LiveDataReactiveStreams.fromPublisher(
             charactersAPI.getCharacters(episode_id)
                 .onErrorReturn {
@@ -36,12 +36,12 @@ class FilmDetailViewModel @Inject constructor(
                     c.count = -1
                     c
                 }
-                .map(object : Function<Characters, CustomResource<Characters>> {
-                    override fun apply(c: Characters): CustomResource<Characters> {
+                .map(object : Function<Characters, Resources<Characters>> {
+                    override fun apply(c: Characters): Resources<Characters> {
                         if (c.count == -1) {
-                            return CustomResource.Error(HTTP_FAILURE, null)
+                            return Resources.Error(HTTP_FAILURE, null)
                         }
-                        return CustomResource.Success(c)
+                        return Resources.Success(c)
                     }
 
                 })

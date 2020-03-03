@@ -10,18 +10,18 @@ import javax.inject.Singleton
 @Singleton
 class DataManager @Inject constructor() {
     private var TAG = DataManager::class.java.name
-    var cachedData = MediatorLiveData<CustomResource<Film>>()
+    var cachedData = MediatorLiveData<Resources<Film>>()
 
-    fun getMoviesFromDataManager(source: LiveData<CustomResource<Film>>) {
+    fun getMoviesFromDataManager(source: LiveData<Resources<Film>>) {
         Log.d(TAG, "Inside Datamanager, getMoviesFromDataManager")
-        cachedData.value = CustomResource.Loading(null) //start the progressing bar
+        cachedData.value = Resources.Loading(null) //start the progressing bar
         cachedData.addSource(source) { t ->
             cachedData.value = t
             cachedData.removeSource(source)
         }
     }
 
-    fun getCachedData(): LiveData<CustomResource<Film>> {
+    fun getCachedData(): LiveData<Resources<Film>> {
         return cachedData
     }
 }

@@ -1,20 +1,15 @@
 package com.ravimhzn.starwars.presentation.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModel
 import com.ravimhzn.starwars.models.Film
-import com.ravimhzn.starwars.network.FilmAPI
-import com.ravimhzn.starwars.utils.Constants.Companion.HTTP_FAILURE
-import com.ravimhzn.starwars.utils.CustomResource
+import com.ravimhzn.starwars.repositories.main.FilmListRepo
 import com.ravimhzn.starwars.utils.DataManager
-import io.reactivex.functions.Function
-import io.reactivex.schedulers.Schedulers
+import com.ravimhzn.starwars.utils.Resources
 import javax.inject.Inject
 
 class FilmListViewModel @Inject constructor(
-    private val filmAPI: FilmAPI,
+    private val filmListRepo: FilmListRepo,
     private val dataManager: DataManager
 ) : ViewModel() {
 
@@ -32,33 +27,10 @@ class FilmListViewModel @Inject constructor(
      * Using DataManager class to handle same data in multiple activities/ fragments.
      */
     fun getMoviesFromServer() {
-        dataManager.getMoviesFromDataManager(performBackgroundOperation())
+        dataManager.getMoviesFromDataManager(filmListRepo.filmListRepoPerformBackgroundOperation())
     }
 
-    private fun performBackgroundOperation(): LiveData<CustomResource<Film>> {
-        return LiveDataReactiveStreams.fromPublisher(
-            filmAPI.getFilms()
-                .onErrorReturn {
-                    Log.d(TAG, "Error $it")
-                    val user = Film()
-                    user.count = -1
-                    user
-
-                }
-                .map(object : Function<Film, CustomResource<Film>> {
-                    override fun apply(film: Film): CustomResource<Film> {
-                        if (film.count == -1) {
-                            return CustomResource.Error(HTTP_FAILURE, null)
-                        }
-                        return CustomResource.Success(film)
-                    }
-
-                })
-                .subscribeOn(Schedulers.io())
-        )
-    }
-
-    fun getMovies(): LiveData<CustomResource<Film>> {
+    fun getMovies(): LiveData<Resources<Film>> {
         return dataManager.getCachedData()
     }
 }

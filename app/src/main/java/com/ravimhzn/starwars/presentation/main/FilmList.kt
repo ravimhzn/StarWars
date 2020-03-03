@@ -15,7 +15,7 @@ import com.ravimhzn.starwars.R
 import com.ravimhzn.starwars.models.Film
 import com.ravimhzn.starwars.presentation.details.FilmDetail
 import com.ravimhzn.starwars.utils.Constants.Companion.POS
-import com.ravimhzn.starwars.utils.CustomResource
+import com.ravimhzn.starwars.utils.Resources
 import com.ravimhzn.starwars.utils.DividerItemDecoration
 import com.ravimhzn.starwars.utils.RecyclerViewListener
 import dagger.android.support.DaggerAppCompatActivity
@@ -81,16 +81,16 @@ class FilmList : DaggerAppCompatActivity(), RecyclerViewListener {
 
     private fun subscribeToObservers() {
         viewModel.getMovies().observe(this,
-            Observer<CustomResource<Film>> { t ->
+            Observer<Resources<Film>> { t ->
                 when (t) {
-                    is CustomResource.Loading -> {
+                    is Resources.Loading -> {
                         showProgressBar(true)
                     }
-                    is CustomResource.Error -> {
+                    is Resources.Error -> {
                         showProgressBar(false)
                         Toast.makeText(this, t.message, Toast.LENGTH_SHORT).show()
                     }
-                    is CustomResource.Success -> {
+                    is Resources.Success -> {
                         showProgressBar(false)
                         Log.d(TAG, t.data?.results?.get(0)?.director)
                         t.data?.let {

@@ -14,7 +14,7 @@ import com.ravimhzn.starwars.R
 import com.ravimhzn.starwars.models.Characters
 import com.ravimhzn.starwars.models.Film
 import com.ravimhzn.starwars.utils.Constants.Companion.POS
-import com.ravimhzn.starwars.utils.CustomResource
+import com.ravimhzn.starwars.utils.Resources
 import com.ravimhzn.starwars.utils.DividerItemDecoration
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -80,12 +80,12 @@ class FilmDetail : DaggerAppCompatActivity() {
 
     private fun subscribeObservers() {
         viewModel.getFilmData().observe(this,
-            Observer<CustomResource<Film>> { t ->
+            Observer<Resources<Film>> { t ->
                 when (t) {
-                    is CustomResource.Error -> {
+                    is Resources.Error -> {
                         Log.d(TAG, t.message)
                     }
-                    is CustomResource.Success -> {
+                    is Resources.Success -> {
                         t.data?.let {
                             it.results?.let { it1 ->
                                 // Log.d(TAG, it1[positon].director)
@@ -105,16 +105,16 @@ class FilmDetail : DaggerAppCompatActivity() {
 
     private fun subscribeObserversForCharacters(positon: Int) {
         viewModel.getCharactersFromServer(positon).observe(this,
-            Observer<CustomResource<Characters>> { t ->
+            Observer<Resources<Characters>> { t ->
                 when (t) {
-                    is CustomResource.Loading -> {
+                    is Resources.Loading -> {
                         showProgressBar(true)
                     }
-                    is CustomResource.Error -> {
+                    is Resources.Error -> {
                         showProgressBar(false)
                         Log.d(TAG, t.message)
                     }
-                    is CustomResource.Success -> {
+                    is Resources.Success -> {
                         showProgressBar(false)
                         Log.d(TAG, t.data?.results?.get(0)?.name)
                         t.data?.let {
